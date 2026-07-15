@@ -514,7 +514,7 @@ def show_detail():
 
     if not detail_df.empty:
         st.dataframe(
-            detail_df.style.applymap(highlight_diff, subset=['Difference']),
+            detail_df.style.map(highlight_diff, subset=['Difference']),
             use_container_width=True
         )
     else:
