@@ -89,11 +89,11 @@ default_values = {
     "input_body_type": "",
 
     # Market
-    "input_sales_price": 469,000,
+    "input_sales_price": 469000,
 
     # Vehicle dimension
-    "input_length": 3,560,
-    "input_width": 1,720,
+    "input_length": 3560,
+    "input_width": 1720,
     "input_height": 1590,
     "input_wheelbase": 2150,
 
@@ -107,7 +107,7 @@ default_values = {
     "input_motor_torque": 90,
 
     "input_driving_range": 400,
-    "input_vehicle_weight" :1,360,
+    "input_vehicle_weight" :1360,
 
     "input_battery_material": "",
     "range_type_choice": "Rang(WLTP)"
