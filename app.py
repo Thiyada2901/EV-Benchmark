@@ -1,3 +1,4 @@
+%%writefile app.py
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -89,25 +90,25 @@ default_values = {
     "input_body_type": "",
 
     # Market
-    "input_sales_price": 469000,
+    "input_sales_price": 2000000,
 
     # Vehicle dimension
-    "input_length": 3560,
-    "input_width": 1720,
-    "input_height": 1590,
-    "input_wheelbase": 2150,
+    "input_length": 5000,
+    "input_width": 1900,
+    "input_height": 1400,
+    "input_wheelbase": 2900,
 
     # Vehicle characteristic
-    "input_ground_clearance": 128,
-    "input_battery_capacity": 41.278,
+    "input_ground_clearance": 172,
+    "input_battery_capacity": 75.0,
 
     "input_battery_manufacturer": "",
 
-    "input_motor_power": 115,
-    "input_motor_torque": 90,
+    "input_motor_power": 220,
+    "input_motor_torque": 420,
 
-    "input_driving_range": 400,
-    "input_vehicle_weight" :1360,
+    "input_driving_range": 500,
+    "input_vehicle_weight" :2100,
 
     "input_battery_material": "",
     "range_type_choice": "Rang(WLTP)"
@@ -287,9 +288,22 @@ def calculate_similarity(input_specs, database_df,
 
         # Combine numerical and categorical for this sub-category
         combined_sub_scores = []
-        for i in range(len(database_df)):
-            score = (alpha_num_cat * sub_numerical_scores[i]) + ((1 - alpha_num_cat) * sub_categorical_scores[i])
-            combined_sub_scores.append(score)
+
+        # ถ้า category นี้ไม่มี categorical factor
+        # เช่น Pricing & Cost
+        if len(sub_categorical_weights) == 0:
+
+            combined_sub_scores = sub_numerical_scores
+
+        else:
+
+            for i in range(len(database_df)):
+                score = (
+                    alpha_num_cat * sub_numerical_scores[i]
+                    + (1 - alpha_num_cat) * sub_categorical_scores[i]
+                )
+                combined_sub_scores.append(score)
+
         return combined_sub_scores
 
     # --- Calculate scores for each main category ---
