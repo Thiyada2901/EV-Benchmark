@@ -89,25 +89,25 @@ default_values = {
     "input_body_type": "",
 
     # Market
-    "input_sales_price": 2000000,
+    "input_sales_price": 469,000,
 
     # Vehicle dimension
-    "input_length": 5000,
-    "input_width": 1900,
-    "input_height": 1400,
-    "input_wheelbase": 2900,
+    "input_length": 3,560,
+    "input_width": 1,720,
+    "input_height": 1590,
+    "input_wheelbase": 2150,
 
     # Vehicle characteristic
-    "input_ground_clearance": 172,
-    "input_battery_capacity": 75.0,
+    "input_ground_clearance": 128,
+    "input_battery_capacity": 41.278,
 
     "input_battery_manufacturer": "",
 
-    "input_motor_power": 220,
-    "input_motor_torque": 420,
+    "input_motor_power": 115,
+    "input_motor_torque": 90,
 
-    "input_driving_range": 500,
-    "input_vehicle_weight" :2100,
+    "input_driving_range": 400,
+    "input_vehicle_weight" :1,360,
 
     "input_battery_material": "",
     "range_type_choice": "Rang(WLTP)"
