@@ -1,3 +1,4 @@
+%%writefile app.py
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -124,7 +125,7 @@ try:
     df.columns = df.columns.str.strip()
 
     # Create Combined_Range column: Prioritize WLTP, then NEDC
-    df['Combined_Range'] = df.apply(lambda row: row['Rang(WLTP)'] if pd.notna(row.get('Rang(WLTP)')) else row.get('Rang(NEDC)'), axis=1)
+    df['Combined_Range'] = df.apply(lambda row: row['Rang(WLTP)'] if pd.notna(row.get('Rang(WLTP)')) else row.get('Rang(NEDC)')), axis=1)
     df['Combined_Range'] = pd.to_numeric(df['Combined_Range'], errors='coerce').fillna(0)
 
     # Strip whitespace from categorical columns
@@ -285,10 +286,24 @@ def calculate_similarity(input_specs, database_df,
                             cat_sim_sum += weight
                 sub_categorical_scores.append((cat_sim_sum / total_sub_cat_weight) * 100)
 
+        # Determine if numerical and/or categorical scores are present and meaningful
+        numerical_scores_are_meaningful = any(s > 0 for s in sub_numerical_scores) if sub_numerical_scores else False
+        categorical_scores_are_meaningful = any(s > 0 for s in sub_categorical_scores) if sub_categorical_scores else False
+
         # Combine numerical and categorical for this sub-category
         combined_sub_scores = []
         for i in range(len(database_df)):
-            score = (alpha_num_cat * sub_numerical_scores[i]) + ((1 - alpha_num_cat) * sub_categorical_scores[i])
+            score = 0.0
+            if numerical_scores_are_meaningful and categorical_scores_are_meaningful:
+                # Both are present, use alpha_num_cat weights
+                score = (alpha_num_cat * sub_numerical_scores[i]) + ((1 - alpha_num_cat) * sub_categorical_scores[i])
+            elif numerical_scores_are_meaningful:
+                # Only numerical scores are meaningful, use them directly (full 100% contribution)
+                score = sub_numerical_scores[i]
+            elif categorical_scores_are_meaningful:
+                # Only categorical scores are meaningful, use them directly (full 100% contribution)
+                score = sub_categorical_scores[i]
+            # If neither is meaningful, score remains 0.0
             combined_sub_scores.append(score)
         return combined_sub_scores
 
@@ -514,7 +529,7 @@ def show_detail():
 
     if not detail_df.empty:
         st.dataframe(
-            detail_df.style.map(highlight_diff, subset=['Difference']),
+            detail_df.style.applymap(highlight_diff, subset=['Difference']),
             use_container_width=True
         )
     else:
